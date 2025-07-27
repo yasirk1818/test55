@@ -1,0 +1,11 @@
+<% layout('layout') -%>
+<h2>User Auto Replies</h2>
+
+<ul class="list-group">
+  <% replies.forEach(r => { %>
+    <li class="list-group-item">
+      "<%= r.keyword %>" → "<%= r.reply %>"
+    </li>
+  <% }) %>
+</ul>
+<a href="/admin" class="btn btn-link mt-3">← Back to Users</a>
