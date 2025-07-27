@@ -1,0 +1,19 @@
+<% layout('layout') -%>
+<h2>Auto Replies</h2>
+
+<form method="POST" action="/auto-replies/add" class="mb-3">
+  <input name="keyword" placeholder="Keyword" required class="form-control mb-2" />
+  <input name="reply" placeholder="Auto Reply" required class="form-control mb-2" />
+  <button class="btn btn-primary">Add Rule</button>
+</form>
+
+<ul class="list-group">
+  <% rules.forEach(rule => { %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      "<%= rule.keyword %>" → "<%= rule.reply %>"
+      <form method="POST" action="/auto-replies/<%= rule._id %>/delete">
+        <button class="btn btn-danger btn-sm">Delete</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
