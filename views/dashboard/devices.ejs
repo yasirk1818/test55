@@ -1,0 +1,41 @@
+<% layout('layout') -%>
+<h2>Connected Devices</h2>
+
+<form method="POST" action="/devices/add" class="mb-3">
+  <input name="name" placeholder="Device name" required class="form-control mb-2" />
+  <button class="btn btn-primary">Add Device</button>
+</form>
+
+<ul class="list-group">
+  <% devices.forEach(device => { %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= device.name %></strong> - <%= device.status %>
+      </div>
+      <form method="POST" action="/devices/<%= device._id %>/delete">
+        <button class="btn btn-danger btn-sm">Remove</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+
+<hr>
+<div id="qr"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  socket.emit('join', '<%= session.user.id %>');
+
+  socket.on('qr', data => {
+    const qrImage = document.createElement('img');
+    qrImage.src = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(data.qr);
+    document.getElementById('qr').innerHTML = '';
+    document.getElementById('qr').appendChild(qrImage);
+  });
+
+  socket.on('ready', data => {
+    alert('Device connected successfully!');
+    window.location.reload();
+  });
+</script>
