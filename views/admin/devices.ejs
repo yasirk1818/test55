@@ -1,0 +1,11 @@
+<% layout('layout') -%>
+<h2>User Devices</h2>
+
+<ul class="list-group">
+  <% devices.forEach(d => { %>
+    <li class="list-group-item">
+      <strong><%= d.name %></strong> - <%= d.status %> - <%= d._id %>
+    </li>
+  <% }) %>
+</ul>
+<a href="/admin" class="btn btn-link mt-3">← Back to Users</a>
