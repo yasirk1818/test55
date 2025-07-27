@@ -29,3 +29,28 @@ router.post('/devices/:id/delete', isLoggedIn, async (req, res) => {
 });
 
 module.exports = router;
+
+const AutoReply = require('../models/AutoReply');
+
+// Show auto-reply page
+router.get('/auto-replies', isLoggedIn, async (req, res) => {
+  const rules = await AutoReply.find({ userId: req.session.user.id });
+  res.render('dashboard/auto-replies', { rules });
+});
+
+// Add new rule
+router.post('/auto-replies/add', isLoggedIn, async (req, res) => {
+  const { keyword, reply } = req.body;
+  await AutoReply.create({
+    userId: req.session.user.id,
+    keyword,
+    reply
+  });
+  res.redirect('/auto-replies');
+});
+
+// Delete rule
+router.post('/auto-replies/:id/delete', isLoggedIn, async (req, res) => {
+  await AutoReply.findByIdAndDelete(req.params.id);
+  res.redirect('/auto-replies');
+});
