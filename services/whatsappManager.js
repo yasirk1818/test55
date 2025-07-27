@@ -51,4 +51,18 @@ module.exports = {
   initClient,
   addNewDevice,
   removeDevice
-};
+const AutoReply = require('../models/AutoReply');
+
+client.on('message', async msg => {
+  const userDevices = await DeviceSession.findOne({ _id: sessionId });
+  if (!userDevices) return;
+
+  const rules = await AutoReply.find({ userId });
+  const matched = rules.find(rule =>
+    msg.body.toLowerCase().includes(rule.keyword.toLowerCase())
+  );
+
+  if (matched) {
+    client.sendMessage(msg.from, matched.reply);
+  }
+});
