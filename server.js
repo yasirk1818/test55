@@ -8,7 +8,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-
+const adminRoutes = require('./routes/admin');
+app.use('/', adminRoutes);
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
